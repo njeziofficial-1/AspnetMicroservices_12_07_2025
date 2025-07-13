@@ -35,18 +35,14 @@ public class ProductRepository(ICatalogContext context) : IProductRepository
 
     public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
     {
-        var filter = Builders<Product>.Filter
-            .ElemMatch(p => p.Category, category);
-        return await context.Products.Find(filter).ToListAsync();
+        FilterDefinition<Product> filters = Builders<Product>.Filter.Eq(p => p.Category, category);
+        return await context.Products.Find(filters).ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> GetProductsByNameAsync(string name)
     {
-        var filter = Builders<Product>.Filter
-            .ElemMatch(p => p.Name, name);
-
-        return await context.Products.Find(filter)
-            .ToListAsync();
+        FilterDefinition<Product> filters = Builders<Product>.Filter.Eq(p => p.Name, name);
+        return await context.Products.Find(filters).ToListAsync();
     }
 
     public async Task<bool> UpdateProductAsync(Product product)
